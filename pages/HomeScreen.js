@@ -1,5 +1,5 @@
-import React, { useEffect,useState } from 'react';
-import { View, Text, SafeAreaView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, SafeAreaView ,StyleSheet} from 'react-native';
 import Mybutton from './components/Mybutton';
 import { openDatabase } from 'react-native-sqlite-storage';
 
@@ -8,6 +8,8 @@ const db = openDatabase({ name: 'UserDatabase.db' });
 const HomeScreen = ({ navigation }) => {
   const [hostelerCount, setHostelerCount] = useState(0);
   const [totalPaid, setTotalPaid] = useState(0);
+  const [totalToPay, setTotalToPay] = useState(0);
+
   useEffect(() => {
     db.transaction(txn => {
       txn.executeSql(
@@ -23,7 +25,9 @@ const HomeScreen = ({ navigation }) => {
                 user_room INTEGER,
                 user_contact INTEGER,
                 user_address TEXT,
-                fee_paid REAL DEFAULT 0.0 -- Add fee_paid column with default value 0.0
+                fee_paid REAL DEFAULT 0.0,
+                date_of_joining DATE,
+                date_of_leaving DATE
               )`,
               [],
               () => {
@@ -48,6 +52,8 @@ const HomeScreen = ({ navigation }) => {
           const { count, total } = res.rows.item(0);
           setHostelerCount(count);
           setTotalPaid(total);
+          const totalToPay = count * 5000;
+          setTotalToPay(totalToPay);
         },
         error => {
           console.log("Error fetching hostelers count and total paid: " + error.message);
@@ -56,10 +62,21 @@ const HomeScreen = ({ navigation }) => {
     });
   }, []);
 
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ flex: 1, backgroundColor: 'white' }}>
+
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 10 }}>
+       
+       <View style={styles.box}>
+         <Text style={styles.text}>Total Hostelers</Text>
+         <Text style={styles.text}>{hostelerCount}</Text>
+       </View>
+       <View style={styles.box}>
+         <Text style={styles.text}>Total Money Remaining</Text>
+         <Text style={styles.text}>{totalToPay - totalPaid}</Text>
+       </View>
+     </View>
         <View style={{ flex: 1 }}>
           <Mybutton
             title="Register Hosteler"
@@ -82,21 +99,28 @@ const HomeScreen = ({ navigation }) => {
             customClick={() => navigation.navigate('Delete')}
           />
         </View>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 10 }}>
-          <View style={{ alignItems: 'center' }}>
-            <Text>Total Hostelers</Text>
-            <Text>{hostelerCount}</Text>
-          </View>
-          <View style={{ alignItems: 'center' }}>
-            <Text>Total Money Remaining</Text>
-            <Text>{(hostelerCount * 60000) - totalPaid}</Text>
-          </View>
-        </View>
-        
       
+
+       
       </View>
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  box: {
+    backgroundColor: 'lightblue',
+    borderRadius: 10,
+    padding: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 150, // Adjust the width as needed
+    height: 100, // Adjust the height as needed
+  },
+  text: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+});
 
 export default HomeScreen;
