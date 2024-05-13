@@ -26,8 +26,10 @@ const ViewAllUser = () => {
   let listItemView = (item) => {
     return (
       <TouchableOpacity onPress={() => toggleModal(item)} style={styles.listItemContainer}>
-        <Text style={styles.itemText}>Id: {item.user_id}</Text>
+        
         <Text style={styles.itemText}>Name: {item.user_name}</Text>
+        <Text style={styles.itemText}>Room No: {item.user_room}</Text>
+        <Text style={styles.itemText}>Remaining: {60000 - item.fee_paid}</Text>
       </TouchableOpacity>
     );
   };
@@ -38,7 +40,6 @@ const ViewAllUser = () => {
         data={flatListItems}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => listItemView(item)}
-        horizontal={true}
         contentContainerStyle={styles.flatListContainer}
       />
 
@@ -61,6 +62,8 @@ const ViewAllUser = () => {
               <Text style={styles.modalText}>Name: {selectedItem.user_name}</Text>
               <Text style={styles.modalText}>Room: {selectedItem.user_room}</Text>
               <Text style={styles.modalText}>Contact: {selectedItem.user_contact}</Text>
+              <Text style={styles.modalText}>Fees Paid till date: {selectedItem.fee_paid}</Text>
+
               <Text style={styles.modalText}>Address: {selectedItem.user_address}</Text>
             </View>
           )}
@@ -74,18 +77,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    marginTop:25
   },
   flatListContainer: {
-    alignItems: 'flex-start',
     paddingHorizontal: 16,
-    
   },
   listItemContainer: {
-    backgroundColor:'yellow',
+    backgroundColor: 'yellow',
     padding: 16,
     borderRadius: 8,
     marginBottom: 12,
-    marginRight: 12,
   },
   itemText: {
     fontSize: 16,

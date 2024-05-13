@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect,useState } from 'react';
 import { View, Text, SafeAreaView } from 'react-native';
 import Mybutton from './components/Mybutton';
 import { openDatabase } from 'react-native-sqlite-storage';
@@ -6,6 +6,8 @@ import { openDatabase } from 'react-native-sqlite-storage';
 const db = openDatabase({ name: 'UserDatabase.db' });
 
 const HomeScreen = ({ navigation }) => {
+  const [hostelerCount, setHostelerCount] = useState(0);
+  const [totalPaid, setTotalPaid] = useState(0);
   useEffect(() => {
     db.transaction(txn => {
       txn.executeSql(
@@ -37,6 +39,24 @@ const HomeScreen = ({ navigation }) => {
     });
   }, []);
 
+  useEffect(() => {
+    db.transaction(txn => {
+      txn.executeSql(
+        "SELECT COUNT(*) AS count, SUM(fee_paid) AS total FROM table_user",
+        [],
+        (tx, res) => {
+          const { count, total } = res.rows.item(0);
+          setHostelerCount(count);
+          setTotalPaid(total);
+        },
+        error => {
+          console.log("Error fetching hostelers count and total paid: " + error.message);
+        }
+      );
+    });
+  }, []);
+
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ flex: 1, backgroundColor: 'white' }}>
@@ -62,12 +82,18 @@ const HomeScreen = ({ navigation }) => {
             customClick={() => navigation.navigate('Delete')}
           />
         </View>
-        <Text style={{ fontSize: 18, textAlign: 'center', color: 'grey' }}>
-          Example of SQLite Database in React Native
-        </Text>
-        <Text style={{ fontSize: 16, textAlign: 'center', color: 'grey' }}>
-          www.aboutreact.com
-        </Text>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 10 }}>
+          <View style={{ alignItems: 'center' }}>
+            <Text>Total Hostelers</Text>
+            <Text>{hostelerCount}</Text>
+          </View>
+          <View style={{ alignItems: 'center' }}>
+            <Text>Total Money Remaining</Text>
+            <Text>{(hostelerCount * 60000) - totalPaid}</Text>
+          </View>
+        </View>
+        
+      
       </View>
     </SafeAreaView>
   );
