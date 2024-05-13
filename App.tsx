@@ -26,7 +26,7 @@ const App = () => {
           name="HomeScreen"
           component={HomeScreen}
           options={{
-            title: 'Home', //Set Header Title
+            title: 'Laxmi Hostel', //Set Header Title
             headerStyle: {
               backgroundColor: '#f4511e', //Set Header color
             },
