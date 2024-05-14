@@ -2,10 +2,12 @@ Install Dependencies:
 
 bash
 
+
 cd hostel-manager-app
 npm install
 
 Run the Application:
+![Screenshot_1715625823](https://github.com/omnaladkar/sqliteuser/assets/75687080/1f9151c2-3599-43da-be22-70684576d6c4)
 
 bash
 
