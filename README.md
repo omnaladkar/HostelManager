@@ -3,7 +3,7 @@ Install Dependencies:
 bash
 
 ![Screenshot_1715630549](https://github.com/omnaladkar/sqliteuser/assets/75687080/eab038c4-bebb-47b8-b36d-b932eced2a71)
-![Screenshot_1715625824](https://github.com/omnaladkar/sqliteuser/assets/75687080/132d8737-a2dc-4c2c-84da-cc18cdf8363a)![Screenshot_1715625825](https://github.com/omnaladkar/sqliteuser/assets/75687080/a048b7f2-e474-4c5a-820c-a5b1db66085e)
+
 
 ![Screenshot_1715678900](https://github.com/omnaladkar/sqliteuser/assets/75687080/50d570da-d9f6-4f69-b9c7-d70aabc1a010)
 ![Screenshot_1715678277](https://github.com/omnaladkar/sqliteuser/assets/75687080/7dee1788-7214-4e64-989e-06c055802b60)
