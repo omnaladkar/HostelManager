@@ -1,17 +1,50 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity } from 'react-native';
-//import { Ionicons } from '@expo/vector-icons'; // Assuming you're using Expo for vector icons
 import Mybutton from './components/Mybutton';
-// import Ionicons from '@expo/vector-icons/Ionicons';
-// import AntDesign from '@expo/vector-icons/AntDesign';
-// import { FontAwesome } from '@expo/vector-icons';
-// import { Feather } from '@expo/vector-icons';
+import { openDatabase } from 'react-native-sqlite-storage';
 
+const db = openDatabase({ name: 'UserDatabase.db' });
 
 const HomeScreen = ({ navigation }) => {
   const [hostelerCount, setHostelerCount] = useState(0);
   const [totalPaid, setTotalPaid] = useState(0);
   const totalToPay = hostelerCount * 5000; // Assuming each hosteler pays 5000, calculate total amount to pay
+
+  useEffect(() => {
+    // Create or open the table_user table
+    db.transaction(txn => {
+      txn.executeSql(
+        "CREATE TABLE IF NOT EXISTS table_user (" +
+        "user_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+        "user_name TEXT," +
+        "user_room INTEGER," +
+        "user_contact INTEGER," +
+        "user_address TEXT," +
+        "fee_paid REAL DEFAULT 0.0," +
+        "date_of_joining DATE," +
+        "date_of_leaving DATE" +
+        ");"
+      );
+    });
+  }, []);
+
+  useEffect(() => {
+    // Retrieve total hostelers count and total amount paid
+    db.transaction(txn => {
+      txn.executeSql(
+        "SELECT COUNT(*) AS count, SUM(fee_paid) AS total FROM table_user",
+        [],
+        (tx, res) => {
+          const { count, total } = res.rows.item(0);
+          setHostelerCount(count);
+          setTotalPaid(total);
+        },
+        error => {
+          console.log("Error fetching hostelers count and total paid: " + error.message);
+        }
+      );
+    });
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -30,47 +63,35 @@ const HomeScreen = ({ navigation }) => {
           </View>
         </View>
       </View>
-      <View style={styles.tabBar}>
-        {/* Navigation buttons */}
-        {/* Each TouchableOpacity represents a navigation button */}
+      <View style={styles.buttonsContainer}>
         <TouchableOpacity
           style={styles.tabButton}
           onPress={() => navigation.navigate('Register')}
         >
-          {/* <Ionicons name="ios-add-circle" size={24} color="#333" /> */}
-         
           <Text style={styles.tabLabel}>Register</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.tabButton}
           onPress={() => navigation.navigate('Update')}
         >
-          {/* <Ionicons name="ios-create" size={24} color="#333" /> */}
-          {/* <Ionicons name="create" size={24} color="black" /> */}
           <Text style={styles.tabLabel}>Update</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.tabButton}
           onPress={() => navigation.navigate('View')}
         >
-          {/* <Ionicons name="ios-eye" size={24} color="#333" /> */}
-          {/* <AntDesign name="eye" size={24} color="black" /> */}
           <Text style={styles.tabLabel}>View</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.tabButton}
           onPress={() => navigation.navigate('ViewAll')}
         >
-          {/* <Ionicons name="ios-list" size={24} color="#333" /> */}
-          {/* <FontAwesome name="list-alt" size={24} color="black" /> */}
           <Text style={styles.tabLabel}>View All</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.tabButton}
           onPress={() => navigation.navigate('Delete')}
         >
-          {/* <Ionicons name="ios-trash" size={24} color="#333" /> */}
-          {/* <Feather name="trash-2" size={24} color="black" /> */}
           <Text style={styles.tabLabel}>Delete</Text>
         </TouchableOpacity>
       </View>
@@ -81,16 +102,17 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#f0f0f0',
   },
   content: {
     flex: 1,
-    paddingVertical: 20,
+    paddingVertical: 40,
     paddingHorizontal: 20,
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
   header: {
-    marginBottom: 5,
+    marginBottom: 20,
   },
   headerText: {
     fontSize: 28,
@@ -102,7 +124,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     width: '100%',
-    marginTop: 40,
+    marginBottom: 40,
   },
   infoBox: {
     backgroundColor: '#ff9f1c',
@@ -125,25 +147,24 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#fff',
   },
-  tabBar: {
+  buttonsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    height: 80,
     backgroundColor: '#fff',
     borderTopWidth: 1,
     borderTopColor: '#ccc',
+    paddingVertical: 30,
   },
   tabButton: {
-    flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
   },
   tabLabel: {
-    fontSize: 12,
+    fontSize: 16,
     color: '#333',
     marginTop: 5,
   },
 });
 
 export default HomeScreen;
+
