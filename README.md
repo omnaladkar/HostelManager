@@ -5,8 +5,6 @@ bash
 ![Screenshot_1715630549](https://github.com/omnaladkar/sqliteuser/assets/75687080/eab038c4-bebb-47b8-b36d-b932eced2a71)
 ![Screenshot_1715625824](https://github.com/omnaladkar/sqliteuser/assets/75687080/132d8737-a2dc-4c2c-84da-cc18cdf8363a)![Screenshot_1715625825](https://github.com/omnaladkar/sqliteuser/assets/75687080/a048b7f2-e474-4c5a-820c-a5b1db66085e)
 
-![Screenshot_1715625823](https://github.com/omnaladkar/sqliteuser/assets/75687080/e7f44769-b67c-4db7-a6fa-fe643811b445)
-![Screenshot_1715679562](https://github.com/omnaladkar/sqliteuser/assets/75687080/c43a1f7a-d88a-4e4d-9e36-82b6462cd728)
 ![Screenshot_1715678900](https://github.com/omnaladkar/sqliteuser/assets/75687080/50d570da-d9f6-4f69-b9c7-d70aabc1a010)
 ![Screenshot_1715678277](https://github.com/omnaladkar/sqliteuser/assets/75687080/7dee1788-7214-4e64-989e-06c055802b60)
 ![Screenshot_1715678252](https://github.com/omnaladkar/sqliteuser/assets/75687080/2087f5d4-95c1-49ac-9a37-ecf17e23c2cd)
